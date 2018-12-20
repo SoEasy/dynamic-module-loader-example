@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ComponentFactoryResolver } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { AnotherComponent } from './another/another.component';
 import { LibComponent } from './lib.component';
@@ -22,15 +22,23 @@ import { LibComponent } from './lib.component';
 })
 export class LibModule {
   constructor(
-    router: Router
+    router: Router,
+    componentFactoryResolver: ComponentFactoryResolver
   ) {
     console.log('Динамически загруженный модуль родился');
     // примитивный патчинг роутера
     console.log(router.config);
     const pageRoutes = router.config.find(config => config.path === 'p');
     pageRoutes.children.push(
-      { path: 'lib1', component: LibComponent },
-      { path: 'lib2', component: AnotherComponent }
+      {
+        path: '',
+        // ComponentFactoryResolver этого модуля
+        _loadedConfig: { module: { componentFactoryResolver } },
+        children: [
+          { path: 'lib1', component: LibComponent, },
+          { path: 'lib2', component: AnotherComponent }
+        ]
+      } as any
     );
     router.resetConfig(router.config);
   }
