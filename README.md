@@ -3,7 +3,7 @@
 
 Сборка ng build --project=lib
 
-После этого содержимое файла dist.lib/bundles/lib.umd.js скопировать в assets/compiled-module.js
+После этого содержимое файла dist/lib/bundles/lib.umd.js скопировать в src/assets/compiled-module.js
 
 Запустить
 
